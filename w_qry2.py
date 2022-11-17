@@ -119,8 +119,7 @@ while not False:
     # i.e. not where they were guessed, not where there is a green
     #print(p)
     print(tempword_list)
-    if 'medal' in tempword_list:
-        print("OK")
+    
     word_list = tempword_list
     tempword_list = []
     
