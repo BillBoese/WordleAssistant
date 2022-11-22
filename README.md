@@ -8,4 +8,3 @@ Under construction.
 Needs:
 
 Cleanup, further testing, input data validation.
-Needs ranking of potential answers
