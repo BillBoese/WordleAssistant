@@ -58,7 +58,7 @@ def display_rankings(word_list):
     #print(df_qry)
     df_qry.fillna(0,inplace=True)
     print(df_qry)
-    df_qry.to_csv('data/r.csv', index=False)
+    #df_qry.to_csv('data/r.csv', index=False)
 
     # this is the df that will hold the words and the scores
 
@@ -154,7 +154,7 @@ def display_rankings(word_list):
     d_sor = empDfobj.sort_values('score', ascending = False)
     print("sorted")
     print(d_sor)
-    d_sor.to_csv('data/res.csv', index=False)
+    # d_sor.to_csv('data/res.csv', index=False)
    # print(rankings)
     #print(type(df_qry))
 
