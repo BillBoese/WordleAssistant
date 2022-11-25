@@ -54,8 +54,6 @@ def display_rankings(word_list):
     df_tmp = sqldf(query)
     df_qry = pd.concat([df_qry, df_tmp], axis=1)
 
-    #print("df_qry")
-    #print(df_qry)
     df_qry.fillna(0,inplace=True)
     print(df_qry)
     #df_qry.to_csv('data/r.csv', index=False)
@@ -77,12 +75,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['firstcount'].map(int).iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print("from matrix")
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
 
@@ -92,12 +84,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['secondcount'].iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print(result)
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
         result = df_qry['Third'].isin([wd[2]]) #create a series of booleans will have one True for the row that matches
@@ -106,12 +92,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['thirdcount'].iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print(result)
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
                 
@@ -121,12 +101,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['fourthcount'].iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print(result)
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
         
@@ -136,12 +110,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['fifthcount'].iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print(result)
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
         
