@@ -7,4 +7,5 @@ Under construction.
 
 Needs:
 
-Cleanup, further testing, input data validation.
+Cleanup, further testing, basic input data validation
+Filter on possible result words to eliminate duplicate yellows
