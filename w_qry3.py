@@ -40,6 +40,13 @@ greens = []
 
 solved = False
 
+# add in a Welcome message
+print(" ")
+print("Welcome to WordleAssistant version 3.0")
+print(" ")
+print("...all the help you will ever need.")
+print("")
+
 # take in input for the guess, the value and green, yellow gray
 # this whole bit needs to be in a while loop to preserve state 
 # multiple guesses
