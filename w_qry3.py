@@ -36,8 +36,16 @@ p =[False,False,False,False,False]
 # not loving this but create an array of letter in the answer in the wrong position
 yel = []
 can_occ_only_once = [] # the case where you have a yellow then gray these chars can only occur once in answer
+greens = []
 
 solved = False
+
+# add in a Welcome message
+print(" ")
+print("Welcome to WordleAssistant version 3.0")
+print(" ")
+print("...all the help you will ever need.")
+print("")
 
 # take in input for the guess, the value and green, yellow gray
 # this whole bit needs to be in a while loop to preserve state 
@@ -67,6 +75,9 @@ while not False:
         if ans[r][1] == 'green':  #need to add logic to remove letter that goes from yellow to green 
             pos[r] = [ans[r][0]]  #also need to update yellow mask
             p[r] = True
+            # add to list of greens if not there
+            if ans[r][0] not in greens:
+                greens.append(ans[r][0])
             #lastly check the yellow list to see if this was in there, if it was remove it
             b = 0
             for z in yel:
@@ -101,6 +112,7 @@ while not False:
     for q in range(5):
         print(pos[q])
     print(yel)
+    print(greens)
     print(can_occ_only_once)
 
     # ok now for the list of possible words.
@@ -124,7 +136,7 @@ while not False:
                     sh = sh + w    # add character to end of string, now we have the part of the word to match
                 #print(sh)
             all_in = all([char in sh for char in yel]) #this bit down here doesnt accomodate duplicates where one is yellow
-            if (all_in):    # really need to remove chars from yel when they are found
+            if (all_in):    # really need to remove chars from yel when they are found, still work to be done
                 tempword_list.append(wrd)
 
         #break
@@ -133,7 +145,7 @@ while not False:
     # i.e. not where they were guessed, not where there is a green
     #print(p)
     #print(tempword_list)
-    display_rankings(tempword_list)
+    display_rankings(tempword_list, pos, greens)
     word_list = tempword_list
     tempword_list = []
     

@@ -12,10 +12,10 @@ pd.set_option('display.expand_frame_repr', False)
 #words = pd.read_csv("data/5letter.csv", usecols=['p1','p2','p3','p4','p5'])
 #words = pd.read_csv("data/5letter.csv", usecols=['word'])
 
-def display_rankings(word_list):
+def display_rankings(word_list, pos, greens):
     #initially i just read rankings from a file, now create them
     #rankings = pd.read_csv("data/rankings.csv", usecols=['First','FirstRank','Second','SecondRank','Third','ThirdRank','Fourth','FourthRank','Fifth','FifthRank'])
-#word_list = words["word"].to_numpy()
+    #word_list = words["word"].to_numpy()
     #print(word_list)
     #print(rankings)
     #turn word_list into a df
@@ -54,11 +54,49 @@ def display_rankings(word_list):
     df_tmp = sqldf(query)
     df_qry = pd.concat([df_qry, df_tmp], axis=1)
 
-    #print("df_qry")
-    #print(df_qry)
     df_qry.fillna(0,inplace=True)
-    print(df_qry)
+    #print(df_qry)
     #df_qry.to_csv('data/r.csv', index=False)
+
+    #Enhancement per user request, refine results to eliminate bias to double letters
+
+    # walk through each position, check for len = 1, if so, set all counts for that pos to 0
+
+    if (len(pos[0]) == 1): # this if the first position and it is green
+            #set all column values to 0, try this
+        df_qry['firstcount'].values[:] = 0
+        # now find the location of the value in pos[x][0] and set those values to 0 in each column, this is ugly
+
+    if (len(pos[1]) == 1):
+        df_qry['secondcount'].values[:] = 0
+
+    if (len(pos[2]) == 1):
+        df_qry['thirdcount'].values[:] = 0
+
+    if (len(pos[3]) == 1):
+        df_qry['fourthcount'].values[:] = 0
+
+    if (len(pos[4]) == 1):
+        df_qry['fifthcount'].values[:] = 0
+
+    #print(df_qry)
+
+    fine = df_qry.isin(greens)
+    #print(fine)
+
+    for idx in fine.index:
+        if (fine['First'][idx] == True):
+            df_qry['firstcount'][idx] = 0
+        if (fine['Second'][idx] == True):
+            df_qry['secondcount'][idx] = 0
+        if (fine['Third'][idx] == True):
+            df_qry['thirdcount'][idx] = 0
+        if (fine['Fourth'][idx] == True):
+            df_qry['fourthcount'][idx] = 0
+        if (fine['Fifth'][idx] == True):
+            df_qry['fifthcount'][idx] = 0
+
+    print(df_qry)
 
     # this is the df that will hold the words and the scores
 
@@ -67,7 +105,7 @@ def display_rankings(word_list):
     empDfobj['score'] =999
 
     #for each word
-    pos = 0
+    ps = 0
 
     for wd in word_list:
         score = 0
@@ -77,12 +115,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['firstcount'].map(int).iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print("from matrix")
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
 
@@ -92,12 +124,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['secondcount'].iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print(result)
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
         result = df_qry['Third'].isin([wd[2]]) #create a series of booleans will have one True for the row that matches
@@ -106,12 +132,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['thirdcount'].iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print(result)
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
                 
@@ -121,12 +141,6 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['fourthcount'].iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print(result)
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
         
@@ -136,26 +150,21 @@ def display_rankings(word_list):
         for x in result:  #iterate through the series of booleans to find the true
             if x:     # this is the one true
                 score = score + df_qry['fifthcount'].iloc[y]
-                #print("word " + wd)
-                #print("x " + str(x))
-                #print("y " + str(y))
-                #print(result)
-                #print(df_qry['firstcount'].map(int).iloc[y])
-                #print("score " + str(score))
             else:
                 y = y +1
         
         #now we are at the bottom of the for loop
         #update the score for this word
-        empDfobj['score'].iloc[pos] = score
-        pos = pos + 1
+        empDfobj['score'].iloc[ps] = score
+        ps = ps + 1
     #print("empDfobj")    
     #print(empDfobj)
     d_sor = empDfobj.sort_values('score', ascending = False)
     print("sorted")
     print(d_sor)
+
     # d_sor.to_csv('data/res.csv', index=False)
-   # print(rankings)
+    # print(rankings)
     #print(type(df_qry))
 
 #some = ('trace','every','quick','apple')
