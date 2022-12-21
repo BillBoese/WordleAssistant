@@ -1,9 +1,11 @@
+'''Main programming logic'''
+#import math
 import pandas as pd
-import numpy as py
-import math
-import datetime
+#import numpy as py
+#import datetime
+
 from fn_rank2 import display_rankings
-pd.set_option('display.max_columns', None)  
+pd.set_option('display.max_columns', None)
 pd.set_option('display.expand_frame_repr', False)
 
 #this one calls a rank function to try to rank remaining words, its clever but meaningless
@@ -25,20 +27,25 @@ tempword_list = []
 
 #pos = [5,2]
 
-pos = [["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
-       ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
-       ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
-       ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
-       ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]]
+pos = [["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r",
+        "s","t","u","v","w","x","y","z"],
+       ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r",
+       "s","t","u","v","w","x","y","z"],
+       ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r",
+       "s","t","u","v","w","x","y","z"],
+       ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r",
+       "s","t","u","v","w","x","y","z"],
+       ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r",
+       "s","t","u","v","w","x","y","z"]]
 
 p =[False,False,False,False,False]
 
 # not loving this but create an array of letter in the answer in the wrong position
 yel = []
-can_occ_only_once = [] # the case where you have a yellow then gray these chars can only occur once in answer
-greens = []
+can_occ_only_once = [] # the case where you have a yellow then gray these
+greens = []            # chars can only occur once in answer
 
-solved = False
+SOLVED = False
 
 # add in a Welcome message
 print(" ")
@@ -48,7 +55,7 @@ print("...all the help you will ever need.")
 print("")
 
 # take in input for the guess, the value and green, yellow gray
-# this whole bit needs to be in a while loop to preserve state 
+# this whole bit needs to be in a while loop to preserve state
 # multiple guesses
 while not False:
     ans = [5,2]
@@ -57,7 +64,7 @@ while not False:
     #take in users guess, add input validation later
 
     for i in range(5):
-      #  if p[i]:            #dont reenter green letters if you put this back put it in the loop below too
+      #  if p[i]:  #dont reenter green letters if you put this back put it in the loop below too
       #      continue
         print("Enter letter")
         ans[i][0]=input()
@@ -72,7 +79,7 @@ while not False:
     # first check for green, thats easy
 
     for r in range(5):           #one loop for each answer
-        if ans[r][1] == 'green':  #need to add logic to remove letter that goes from yellow to green 
+        if ans[r][1] == 'green':  #need to add logic to remove letter that goes from yellow to green
             pos[r] = [ans[r][0]]  #also need to update yellow mask
             p[r] = True
             # add to list of greens if not there
@@ -85,11 +92,11 @@ while not False:
                     yel.pop(b)
                 b = b + 1
         elif ans[r][1] == 'gray':  #remove character from all positions,except when this char is already yellow
-            if (ans[r][0] in yel): # answer is a duplicate its gray now but was yellow before 
+            if ans[r][0] in yel: # answer is a duplicate its gray now but was yellow before
                 pos[r].remove(ans[r][0]) # then just remove it from its current position
                 can_occ_only_once.append(ans[r][0])
             else:  #it just isnt in the answer
-                for z in range(5):     
+                for z in range(5):
                     #try:
                     #    pos[z].remove(ans[r][0])
                     #except ValueError:
@@ -99,14 +106,14 @@ while not False:
                             pos[z].remove(ans[r][0])
                         except ValueError:
                             pass
-            
+
         else:  #yellow
             #remove character from this position only
             try:
                 pos[r].remove(ans[r][0])
             except ValueError:
                 pass
-            if (ans[r][0] not in yel): #add to list of yellows
+            if ans[r][0] not in yel: #add to list of yellows
                 yel.append(ans[r][0])
 
     for q in range(5):
@@ -131,12 +138,12 @@ while not False:
             # match a true in the mask as well as at least one of the yellows in one
             # of those spaces
             sh = ''
-            for w, q in zip(wrd, range(5)):               #need to shorten the word, loop through each letter 
-                if not p[q]:        #if the position isnt green  
+            for w, q in zip(wrd, range(5)): #need to shorten the word, loop through each letter
+                if not p[q]:        #if the position isnt green
                     sh = sh + w    # add character to end of string, now we have the part of the word to match
                 #print(sh)
             all_in = all([char in sh for char in yel]) #this bit down here doesnt accomodate duplicates where one is yellow
-            if (all_in):    # really need to remove chars from yel when they are found, still work to be done
+            if all_in:    # really need to remove chars from yel when they are found, still work to be done
                 tempword_list.append(wrd)
 
         #break
@@ -149,5 +156,3 @@ while not False:
     word_list = tempword_list
     tempword_list = []
     
-
-
