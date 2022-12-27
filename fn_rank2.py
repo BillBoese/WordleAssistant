@@ -1,11 +1,10 @@
+''' Ranking function '''
 import pandas as pd
-import numpy as py
-import math
-import datetime
+
 from pandasql import sqldf
 
 pd.options.mode.chained_assignment = None  # default='warn'
-pd.set_option('display.max_columns', None, 'display.max_rows', None)  
+pd.set_option('display.max_columns', None, 'display.max_rows', None)
 pd.set_option('display.expand_frame_repr', False)
 
 # create dataframe with all the 5 letter words
@@ -13,14 +12,8 @@ pd.set_option('display.expand_frame_repr', False)
 #words = pd.read_csv("data/5letter.csv", usecols=['word'])
 
 def display_rankings(word_list, pos, greens):
-    #initially i just read rankings from a file, now create them
-    #rankings = pd.read_csv("data/rankings.csv", usecols=['First','FirstRank','Second','SecondRank','Third','ThirdRank','Fourth','FourthRank','Fifth','FifthRank'])
-    #word_list = words["word"].to_numpy()
-    #print(word_list)
-    #print(rankings)
     #turn word_list into a df
     rankings = pd.DataFrame(word_list,columns = ['word'])
-    #print("rankings")
     #print(rankings)
     rankings['First'] = rankings['word'].str[0]
     rankings['Second'] = rankings['word'].str[1]
@@ -34,22 +27,22 @@ def display_rankings(word_list, pos, greens):
     #query = "select "
     df_qry = sqldf(query)
 
-    # add to the df_qry from now on 
+    # add to the df_qry from now on
     query = "select second, count(second) secondcount from rankings where second is not null group by second order by count(second) desc"
     df_tmp = sqldf(query)
     df_qry = pd.concat([df_qry, df_tmp], axis=1)
 
-    # add to the df_qry from now on 
+    # add to the df_qry from now on
     query = "select third, count(third) thirdcount from rankings where third is not null group by third order by count(third) desc"
     df_tmp = sqldf(query)
     df_qry = pd.concat([df_qry, df_tmp], axis=1)
 
-    # add to the df_qry from now on 
+    # add to the df_qry from now on
     query = "select Fourth, count(Fourth) fourthcount from rankings where Fourth is not null group by Fourth order by count(Fourth) desc"
     df_tmp = sqldf(query)
     df_qry = pd.concat([df_qry, df_tmp], axis=1)
 
-    # add to the df_qry from now on 
+    # add to the df_qry from now on
     query = "select fifth, count(fifth) fifthcount from rankings where fifth is not null group by fifth order by count(fifth) desc"
     df_tmp = sqldf(query)
     df_qry = pd.concat([df_qry, df_tmp], axis=1)
@@ -61,6 +54,7 @@ def display_rankings(word_list, pos, greens):
     #Enhancement per user request, refine results to eliminate bias to double letters
 
     # walk through each position, check for len = 1, if so, set all counts for that pos to 0
+    # there is no need to count the occurence when it is green it just skews the result
 
     if (len(pos[0]) == 1): # this if the first position and it is green
             #set all column values to 0, try this
@@ -81,19 +75,22 @@ def display_rankings(word_list, pos, greens):
 
     #print(df_qry)
 
+    # tweak the counts again, reduce the score for words that have doubles in
+    # i.e. if it is green give it a score of zero in other positions too
+
     fine = df_qry.isin(greens)
     #print(fine)
 
     for idx in fine.index:
-        if (fine['First'][idx] == True):
+        if (fine['First'][idx]):
             df_qry['firstcount'][idx] = 0
-        if (fine['Second'][idx] == True):
+        if (fine['Second'][idx]):
             df_qry['secondcount'][idx] = 0
-        if (fine['Third'][idx] == True):
+        if (fine['Third'][idx]):
             df_qry['thirdcount'][idx] = 0
-        if (fine['Fourth'][idx] == True):
+        if (fine['Fourth'][idx]):
             df_qry['fourthcount'][idx] = 0
-        if (fine['Fifth'][idx] == True):
+        if (fine['Fifth'][idx]):
             df_qry['fifthcount'][idx] = 0
 
     print(df_qry)
