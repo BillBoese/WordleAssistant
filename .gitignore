@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+__pycache__/fn_rank2.cpython-310.pyc
