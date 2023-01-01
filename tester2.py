@@ -1,12 +1,14 @@
 import pandas as pd
 
-gs = [5,2]
-gs = [[' ', ' '],[' ',' '],[' ',' '],[' ',' '],[' ',' ']]
+#gs = [5,2]
+#gs = [[' ', ' '],[' ',' '],[' ',' '],[' ',' '],[' ',' ']]
 
 def ansFn(guess, answer, anslist):
 
     # build the first column in the 2d array with just the letter
     # do the color after
+    #print(guess)
+    #print(answer)
 
     pl =[True, True, True, True, True]
 
@@ -29,15 +31,15 @@ def ansFn(guess, answer, anslist):
                 anslist[x][1] = 'gray'
             else:                         #does this work?
                 anslist[x][1] = 'yellow'
-
+    #print(anslist)
     #check if all positions are green, ie its solved
-    print(pl)
+    #print(pl)
     if not any(pl):
         return True
     else:
         return False
 
-if ansFn("salet", "nates", gs):
-    print("it returned true")
+#if ansFn("salet", "mummy", gs):
+#    print("it returned true")
 
-print(gs)
+#print(gs)
