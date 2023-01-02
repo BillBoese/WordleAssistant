@@ -1,4 +1,4 @@
-''' Ranking function '''
+''' Ranking function using pandas simplified for performance'''
 import pandas as pd
 #import duckdb
 #from pandasql import sqldf
@@ -75,5 +75,5 @@ def display_rankings(word_list, pos, greens):
         ps = ps + 1
 
     d_sor = empDfobj.sort_values('score', ascending = False)
-    print(d_sor)
+    #print(d_sor)
     return d_sor['guess'].iloc[0]

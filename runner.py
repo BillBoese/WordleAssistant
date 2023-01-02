@@ -1,3 +1,5 @@
+'''Main test harness for bulk testing'''
+
 import pandas as pd
 from tester2 import ansFn
 from sol_finder import wordFilter
@@ -7,7 +9,7 @@ from datetime import datetime
 #I didnt do a good job of designing this modular
 
 # create dataframe with all the 5 letter words
-st_guess = "audio" # hardcoded for first guess, change later
+st_guess = "slice" # hardcoded for first guess, change later
 words = pd.read_csv("data/5letter.csv", usecols=['word'])
 word_list = words["word"].to_numpy()
 #word_list = ['broke','salet']

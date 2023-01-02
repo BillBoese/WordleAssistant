@@ -1,4 +1,4 @@
-'''Main programming logic'''
+'''Interactive main using old original ranking and inline word filter'''
 #import math
 import pandas as pd
 #import numpy as py

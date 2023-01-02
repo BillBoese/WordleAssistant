@@ -1,4 +1,4 @@
-'''Main programming logic'''
+'''Source file for wordFilter function'''
 #import math
 import pandas as pd
 

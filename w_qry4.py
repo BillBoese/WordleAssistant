@@ -1,4 +1,4 @@
-'''Main programming logic use new functions here'''
+'''Interactive program using new functions for filter and ranking'''
 #import math
 import pandas as pd
 from sol_finder import wordFilter

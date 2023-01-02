@@ -1,4 +1,4 @@
-''' Ranking function '''
+''' Ranking function using duck DB'''
 import pandas as pd
 import duckdb
 #from pandasql import sqldf

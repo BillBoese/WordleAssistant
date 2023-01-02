@@ -1,3 +1,5 @@
+'''Source filel for ansFn wordle coloring function'''
+
 import pandas as pd
 
 #gs = [5,2]

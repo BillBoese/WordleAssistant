@@ -1,4 +1,4 @@
-''' Ranking function '''
+''' Ranking function using pandasql used by original interactive. too slow for bulk'''
 import pandas as pd
 
 from pandasql import sqldf
