@@ -9,6 +9,7 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.expand_frame_repr', False)
 
 #this one calls a rank function to try to rank remaining words, its clever but meaningless
+#include tatty bug update
 
 # create dataframe with all the 5 letter words
 #words = pd.read_csv("data/5letter.csv", usecols=['word','p1','p2','p3','p4','p5'])
@@ -71,13 +72,17 @@ while not False:
         print("Enter color, green, yellow, or gray")
         ans[i][1]=input()
 
+    #tatty bug
+    c = []
+    c = [i[0] for i in ans]
+
     #print(ans[0][0])
     #print(ans[0][1])
 
     # reduce character position arrays
     # loop through the array of responses
     # first check for green, thats easy
-
+    
     for r in range(5):           #one loop for each answer
         if ans[r][1] == 'green':  #need to add logic to remove letter that goes from yellow to green
             pos[r] = [ans[r][0]]  #also need to update yellow mask
@@ -88,8 +93,13 @@ while not False:
             #lastly check the yellow list to see if this was in there, if it was remove it
             b = 0
             for z in yel:
-                if ans[r][0] == yel[b]:
-                    yel.pop(b)
+                if ans[r][0] == z: #yel[b]: #tatty bug update
+                #if (ans[r][0] == yel[b]) and (ans[r][0] not in ans[0:r][0]): 
+                    if ans[r][0] not in c[:r]: #this cond for tatty bug green before gray
+                        yel.pop(b)
+                    elif len(can_occ_only_once) > 0:
+                        #gray before green
+                        yel.pop(b)
                 b = b + 1
         elif ans[r][1] == 'gray':  #remove character from all positions,except when this char is already yellow
             if ans[r][0] in yel: # answer is a duplicate its gray now but was yellow before
@@ -118,8 +128,11 @@ while not False:
 
     for q in range(5):
         print(pos[q])
+    print("Yellows")
     print(yel)
+    print("Greens")
     print(greens)
+    print("Can only occ once")
     print(can_occ_only_once)
 
     # ok now for the list of possible words.

@@ -9,7 +9,7 @@ from datetime import datetime
 #I didnt do a good job of designing this modular
 
 # create dataframe with all the 5 letter words
-st_guess = "atone" # hardcoded for first guess, change later
+st_guess = "salet" # hardcoded for first guess, change later
 words = pd.read_csv("data/5letter.csv", usecols=['word'])
 word_list = words["word"].to_numpy()
 #word_list = ['broke','salet']
@@ -52,8 +52,13 @@ for word in word_list:
             break
         else:
             #filter function pass it the gs array and the current wordlist
+            #print(st_guess)
+            #print(guess)
+            #print(word)
             int_words = wordFilter(sol_words, gs, pos, yel, can_occ_only_once, greens,p)
+            #print(len(int_words))
             guess = display_rankings(int_words, pos, greens)
+                
     res_row = [st_guess,word,guesses]
     results_df.loc[len(results_df)] = res_row
     #if len(results_df) >= 500:

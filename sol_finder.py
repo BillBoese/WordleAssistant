@@ -2,12 +2,18 @@
 #import math
 import pandas as pd
 
+#updated for tatty bug
+
 #SOLVED = False
 
 def wordFilter(word_list, ans, pos, yel, can_occ_only_once, greens,p):
 
     tempword_list = []
     
+    #tatty bug
+    c = []
+    c = [i[0] for i in ans]
+
     for r in range(5):           #one loop for each answer
         if ans[r][1] == 'green':  #need to add logic to remove letter that goes from yellow to green
             pos[r] = [ans[r][0]]  #also need to update yellow mask
@@ -18,8 +24,13 @@ def wordFilter(word_list, ans, pos, yel, can_occ_only_once, greens,p):
             #lastly check the yellow list to see if this was in there, if it was remove it
             b = 0
             for z in yel:
-                if ans[r][0] == yel[b]:
-                    yel.pop(b)
+                if ans[r][0] == z: #yel[b]: #tatty bug update
+                #if (ans[r][0] == yel[b]) and (ans[r][0] not in ans[0:r][0]): 
+                    if ans[r][0] not in c[:r]: #this cond for tatty bug green before gray
+                        yel.pop(b)
+                    elif len(can_occ_only_once) > 0:
+                        #gray before green
+                        yel.pop(b)
                 b = b + 1
         elif ans[r][1] == 'gray':  #remove character from all positions,except when this char is already yellow
             if ans[r][0] in yel: # answer is a duplicate its gray now but was yellow before
